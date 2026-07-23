@@ -1,0 +1,223 @@
+/* Background */
+
+.login-page{
+    width:100%;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    position:relative;
+    background:linear-gradient(135deg,#2563eb,#7c3aed,#ec4899);
+    background-size:300% 300%;
+    animation:bgAnimation 10s infinite alternate;
+}
+
+@keyframes bgAnimation{
+    0%{
+        background-position:left;
+    }
+    100%{
+        background-position:right;
+    }
+}
+
+/* Floating Circles */
+
+.circle{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(10px);
+}
+
+.circle1{
+    width:300px;
+    height:300px;
+    background:#ffffff33;
+    top:8%;
+    left:10%;
+}
+
+.circle2{
+    width:220px;
+    height:220px;
+    background:#ffffff22;
+    bottom:10%;
+    right:10%;
+}
+
+/* Login Card */
+
+.login-card{
+    width:420px;
+    padding:40px;
+    border-radius:25px;
+
+    background:rgba(255,255,255,.18);
+
+    backdrop-filter:blur(18px);
+
+    box-shadow:0 15px 40px rgba(0,0,0,.3);
+
+    color:white;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+}
+
+.login-card h1{
+
+    text-align:center;
+
+    font-size:35px;
+
+    font-weight:bold;
+}
+
+.login-card p{
+
+    text-align:center;
+
+    opacity:.8;
+}
+
+/* Input */
+
+.input-box{
+
+    display:flex;
+
+    align-items:center;
+
+    background:white;
+
+    border-radius:12px;
+
+    padding:12px;
+
+    color:black;
+}
+
+.input-box input{
+
+    flex:1;
+
+    border:none;
+
+    outline:none;
+
+    font-size:16px;
+
+    margin-left:10px;
+}
+
+.icon{
+
+    color:#2563eb;
+}
+
+.eye{
+
+    cursor:pointer;
+
+    color:#555;
+}
+
+/* Select */
+
+select{
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:12px;
+
+    font-size:15px;
+
+    outline:none;
+}
+
+/* Remember */
+
+.remember{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    font-size:14px;
+}
+
+.remember a{
+
+    color:white;
+
+    text-decoration:none;
+}
+
+/* Button */
+
+button{
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#2563eb;
+
+    color:white;
+
+    font-size:18px;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+button:hover{
+
+    background:#1d4ed8;
+}
+
+/* Mobile */
+
+@media(max-width:500px){
+
+.login-card{
+
+width:90%;
+
+padding:25px;
+
+}
+
+.login-card h1{
+
+font-size:28px;
+
+}
+
+}
+.login-page{
+
+height:100vh;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+background-size:cover;
+
+background-position:center;
+
+background-repeat:no-repeat;
+
+}
