@@ -1,250 +1,277 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import API from "../../api/axios";
+import { motion } from "framer-motion";
+import {
+  FaUsers,
+  FaUserPlus,
+  FaSearch,
+  FaEdit,
+  FaTrash,
+  FaEye
+} from "react-icons/fa";
 
+import API from "../../api/axios";
 import SearchBar from "../../components/common/searchbar";
 
+import "../../styles/customer.css";
 
+export default function CustomerList() {
 
-export default function CustomerList(){
+  const navigate = useNavigate();
 
-const navigate = useNavigate();
+  const [search, setSearch] = useState("");
 
-const [search,setSearch] = useState("");
+  const [customers, setCustomers] = useState<any[]>([]);
 
-const [customers,setCustomers] = useState<any[]>([]);
+  useEffect(() => {
 
+    const fetchCustomers = async () => {
 
-// Fetch customers from backend
-useEffect(()=>{
+      try {
 
-    const fetchCustomers = async()=>{
+        const response = await API.get("/customers");
 
-        try{
+        setCustomers(response.data);
 
-            const response = await API.get("/customers");
+      } catch (err) {
 
-            setCustomers(response.data);
+        console.log(err);
 
-        }
-        catch(error){
-
-            console.log(error);
-
-        }
+      }
 
     };
 
-
     fetchCustomers();
 
-},[]);
+  }, []);
 
+  function deleteCustomer(id: number) {
 
+    setCustomers(customers.filter(c => c.id !== id));
 
-// Delete customer (frontend only)
-function deleteCustomer(id:number){
+  }
 
-    setCustomers(
-        customers.filter(
-            customer=>customer.id !== id
-        )
-    );
+  const filtered = customers.filter(customer =>
 
-}
+    customer.name?.toLowerCase().includes(search.toLowerCase()) ||
 
+    customer.company?.toLowerCase().includes(search.toLowerCase())
 
+  );
 
-// Search filter
-const filtered = customers.filter(customer =>
+  return (
 
-    customer.name?.toLowerCase()
-    .includes(search.toLowerCase())
+    <motion.div
+      className="customer-page"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+    >
 
-    ||
+      {/* HERO */}
 
-    customer.company?.toLowerCase()
-    .includes(search.toLowerCase())
+      <div className="customer-hero">
 
-);
+        <div>
 
+          <h1>👥 Customer Management</h1>
 
+          <p>
 
-return(
+            Manage customers, update information, search records and monitor customer activity.
 
-<div className="dashboard">
+          </p>
 
+        </div>
 
-<div className="page-header">
+        <motion.img
 
-<h1>
-Customers
-</h1>
+          src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=900"
 
+          className="customer-image"
 
-<button
+          animate={{ y: [0, -12, 0] }}
 
-className="btn"
+          transition={{
+            repeat: Infinity,
+            duration: 3
+          }}
 
-onClick={()=>navigate("/customers/add")}
+        />
 
->
+      </div>
 
-+ Add Customer
+      {/* KPI */}
 
-</button>
+      <div className="customer-stats">
 
+        <div className="stat-box">
 
-</div>
+          <FaUsers />
 
+          <h3>Total Customers</h3>
 
+          <h2>{customers.length}</h2>
 
-<SearchBar
+        </div>
 
-value={search}
+        <div className="stat-box">
 
-onChange={(e)=>
-setSearch(e.target.value)
-}
+          <FaUserPlus />
 
-/>
+          <h3>New Customers</h3>
 
+          <h2>25</h2>
 
+        </div>
 
+      </div>
 
-<table>
+      {/* SEARCH + BUTTONS */}
 
+      <div className="toolbar">
 
-<thead>
+        <div className="search-wrapper">
 
-<tr>
+          <FaSearch />
 
-<th>Name</th>
+          <SearchBar
 
-<th>Mobile</th>
+            value={search}
 
-<th>Email</th>
+            onChange={(e)=>setSearch(e.target.value)}
 
-<th>Business</th>
+          />
 
-<th>GST Number</th>
+        </div>
 
-<th>Actions</th>
+        <div className="button-group">
 
+          <button
 
-</tr>
+            className="add-btn"
 
-</thead>
+            onClick={()=>navigate("/customers/add")}
 
+          >
 
+            ➕ Add Customer
 
-<tbody>
+          </button>
 
+          <button
 
-{
+            className="edit-top-btn"
 
-filtered.map(customer=>(
+            onClick={()=>navigate("/customers/edit")}
 
+          >
 
-<tr key={customer.id}>
+            ✏ Edit Customer
 
+          </button>
 
-<td>
-{customer.name}
-</td>
+        </div>
 
+      </div>
 
-<td>
-{customer.phone}
-</td>
+      {/* TABLE */}
 
+      <div className="table-box">
 
-<td>
-{customer.email}
-</td>
+        <table>
 
+          <thead>
 
-<td>
-{customer.company}
-</td>
+            <tr>
 
+              <th>Name</th>
 
-<td>
-{customer.gst}
-</td>
+              <th>Phone</th>
 
+              <th>Email</th>
 
+              <th>Business</th>
 
-<td>
+              <th>GST</th>
 
+              <th>Actions</th>
 
-<button
+            </tr>
 
-className="view-btn"
+          </thead>
 
-onClick={()=>navigate("/customers/details")}
+          <tbody>
 
->
+            {
 
-View
+              filtered.map(customer => (
 
-</button>
+                <tr key={customer.id}>
 
+                  <td>{customer.name}</td>
 
+                  <td>{customer.phone}</td>
 
+                  <td>{customer.email}</td>
 
-<button
+                  <td>{customer.company}</td>
 
-className="edit-btn"
+                  <td>{customer.gst}</td>
 
-onClick={()=>navigate("/customers/edit")}
+                  <td>
 
->
+                    <button
 
-Edit
+                      className="view-btn"
 
-</button>
+                      onClick={()=>navigate("/customers/details")}
 
+                    >
 
+                      <FaEye />
 
+                    </button>
 
-<button
+                    <button
 
-className="delete-btn"
+                      className="edit-btn"
 
-onClick={()=>deleteCustomer(customer.id)}
+                      onClick={()=>navigate(`/customers/edit/${customer.id}`)}
 
->
+                    >
 
-Delete
+                      <FaEdit />
 
-</button>
+                    </button>
 
+                    <button
 
-</td>
+                      className="delete-btn"
 
+                      onClick={()=>deleteCustomer(customer.id)}
 
+                    >
 
-</tr>
+                      <FaTrash />
 
+                    </button>
 
-))
+                  </td>
 
+                </tr>
 
-}
+              ))
 
+            }
 
+          </tbody>
 
-</tbody>
+        </table>
 
+      </div>
 
-</table>
+    </motion.div>
 
-
-
-</div>
-
-
-);
+  );
 
 }

@@ -1,0 +1,466 @@
+/* Google Font */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+/* ===========================
+   PRODUCT PAGE
+=========================== */
+
+.product-page{
+
+min-height:100vh;
+
+padding:35px;
+
+background:
+linear-gradient(rgba(8,20,45,.82),rgba(8,20,45,.82)),
+url("https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920");
+
+background-size:cover;
+
+background-position:center;
+
+background-attachment:fixed;
+
+}
+
+/* ===========================
+   HERO
+=========================== */
+
+.product-hero{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:35px;
+
+padding:35px;
+
+background:rgba(255,255,255,.12);
+
+backdrop-filter:blur(15px);
+
+border-radius:25px;
+
+box-shadow:0 15px 35px rgba(0,0,0,.25);
+
+}
+
+.product-hero h1{
+
+font-size:48px;
+
+font-weight:700;
+
+color:#FFD700;
+
+margin-bottom:15px;
+
+}
+
+.product-hero p{
+
+font-size:18px;
+
+line-height:1.8;
+
+color:white;
+
+max-width:550px;
+
+}
+
+.hero-image{
+
+width:380px;
+
+border-radius:25px;
+
+box-shadow:0 20px 40px rgba(0,0,0,.35);
+
+}
+
+/* ===========================
+   STATS
+=========================== */
+
+.product-stats{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+gap:25px;
+
+margin-bottom:35px;
+
+}
+
+.stat-card{
+
+background:rgba(255,255,255,.15);
+
+backdrop-filter:blur(18px);
+
+border-radius:20px;
+
+padding:25px;
+
+text-align:center;
+
+color:white;
+
+transition:.35s;
+
+box-shadow:0 12px 25px rgba(0,0,0,.2);
+
+}
+
+.stat-card svg{
+
+font-size:40px;
+
+margin-bottom:15px;
+
+color:#FFD700;
+
+}
+
+.stat-card h3{
+
+font-size:18px;
+
+margin-bottom:10px;
+
+}
+
+.stat-card h2{
+
+font-size:34px;
+
+font-weight:bold;
+
+}
+
+.stat-card:hover{
+
+transform:translateY(-8px) scale(1.03);
+
+}
+
+/* ===========================
+   TOOLBAR
+=========================== */
+
+.toolbar{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:30px;
+
+}
+
+.search-box{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+background:white;
+
+padding:14px 20px;
+
+border-radius:50px;
+
+width:420px;
+
+box-shadow:0 10px 25px rgba(0,0,0,.15);
+
+}
+
+.search-box svg{
+
+color:#2563eb;
+
+font-size:18px;
+
+}
+
+.search-box input{
+
+border:none;
+
+outline:none;
+
+width:100%;
+
+font-size:16px;
+
+}
+
+/* ===========================
+   BUTTON
+=========================== */
+
+.add-btn{
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+padding:14px 28px;
+
+border:none;
+
+border-radius:15px;
+
+background:linear-gradient(135deg,#2563eb,#3b82f6);
+
+color:white;
+
+font-size:16px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.3s;
+
+box-shadow:0 12px 25px rgba(37,99,235,.35);
+
+}
+
+.add-btn:hover{
+
+transform:translateY(-3px);
+
+background:linear-gradient(135deg,#1d4ed8,#2563eb);
+
+}
+
+/* ===========================
+   TABLE
+=========================== */
+
+.table-container{
+
+background:rgba(255,255,255,.92);
+
+backdrop-filter:blur(18px);
+
+padding:25px;
+
+border-radius:25px;
+
+box-shadow:0 15px 35px rgba(0,0,0,.25);
+
+overflow:auto;
+
+}
+
+.table{
+
+margin-bottom:0;
+
+}
+
+.table thead{
+
+background:#2563eb;
+
+color:white;
+
+}
+
+.table thead th{
+
+padding:16px;
+
+border:none;
+
+font-size:16px;
+
+}
+
+.table tbody td{
+
+padding:16px;
+
+vertical-align:middle;
+
+font-size:15px;
+
+}
+
+.table tbody tr{
+
+transition:.3s;
+
+}
+
+.table tbody tr:hover{
+
+background:#eff6ff;
+
+transform:scale(1.01);
+
+}
+
+/* ===========================
+   LOW STOCK
+=========================== */
+
+.low-stock{
+
+color:red;
+
+font-weight:700;
+
+}
+
+/* ===========================
+   ACTION BUTTONS
+=========================== */
+
+.edit-btn{
+
+border:none;
+
+background:#0ea5e9;
+
+color:white;
+
+padding:10px 14px;
+
+border-radius:10px;
+
+margin-right:10px;
+
+transition:.3s;
+
+}
+
+.edit-btn:hover{
+
+background:#0284c7;
+
+transform:scale(1.1);
+
+}
+
+.delete-btn{
+
+border:none;
+
+background:#ef4444;
+
+color:white;
+
+padding:10px 14px;
+
+border-radius:10px;
+
+transition:.3s;
+
+}
+
+.delete-btn:hover{
+
+background:#dc2626;
+
+transform:scale(1.1);
+
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:1000px){
+
+.product-hero{
+
+flex-direction:column;
+
+text-align:center;
+
+gap:30px;
+
+}
+
+.hero-image{
+
+width:100%;
+
+max-width:350px;
+
+}
+
+.toolbar{
+
+flex-direction:column;
+
+gap:20px;
+
+}
+
+.search-box{
+
+width:100%;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.product-page{
+
+padding:20px;
+
+}
+
+.product-hero h1{
+
+font-size:34px;
+
+}
+
+.product-hero p{
+
+font-size:15px;
+
+}
+
+.stat-card h2{
+
+font-size:28px;
+
+}
+
+.table{
+
+font-size:14px;
+
+}
+
+}

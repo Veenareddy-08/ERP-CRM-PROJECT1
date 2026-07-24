@@ -1,28 +1,44 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+
+import {
+  FaArrowLeft,
+  FaExclamationTriangle,
+  FaBoxes
+} from "react-icons/fa";
+
 import API from "../../api/axios";
 
-export default function LowStockAlert(){
+import "../../styles/lowstock.css";
+
+export default function LowStockAlert() {
+
+    const navigate = useNavigate();
 
     const [products, setProducts] = useState<any[]>([]);
 
+    useEffect(() => {
 
-    useEffect(()=>{
+        const fetchProducts = async () => {
 
-        const fetchProducts = async()=>{
-
-            try{
+            try {
 
                 const response = await API.get("/products");
 
                 const lowStockProducts = response.data.filter(
-                    (product:any)=>
-                    product.stock <= product.minStock
+
+                    (product: any) =>
+
+                        product.stock <= product.minStock
+
                 );
 
                 setProducts(lowStockProducts);
 
             }
-            catch(error){
+
+            catch (error) {
 
                 console.log(error);
 
@@ -30,113 +46,155 @@ export default function LowStockAlert(){
 
         };
 
-
         fetchProducts();
 
-    },[]);
+    }, []);
 
+    return (
 
+        <motion.div
 
-    return(
+            className="lowstock-page"
 
-        <div className="page-container">
+            initial={{ opacity: 0 }}
 
+            animate={{ opacity: 1 }}
 
-            <div className="table-container">
+        >
 
+            {/* Back Button */}
 
-                <h2>
-                    Low Stock Alert
-                </h2>
+            <button
 
+                className="btn btn-primary back-btn"
 
+                onClick={() => navigate("/inventory")}
 
-                <table>
+            >
 
+                <FaArrowLeft className="me-2" />
 
-                <thead>
+                Back to Inventory
 
-                <tr>
+            </button>
 
-                    <th>
-                        Product
-                    </th>
+            {/* Hero */}
 
-                    <th>
-                        Current Stock
-                    </th>
+            <div className="lowstock-hero">
 
-                    <th>
-                        Minimum Required
-                    </th>
+                <div>
 
-                    <th>
-                        Status
-                    </th>
+                    <h1>
 
-                </tr>
+                        Low Stock Alerts
 
-                </thead>
+                    </h1>
 
+                    <p>
 
+                        Products below minimum stock level require immediate replenishment.
 
-                <tbody>
+                    </p>
 
+                </div>
 
-                {
+                <motion.img
 
+                    src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=900"
 
-                products.map((item)=>(
+                    className="hero-image"
 
+                    animate={{ y: [0, -15, 0] }}
 
-                <tr key={item.id}>
+                    transition={{
 
+                        repeat: Infinity,
 
-                    <td>
-                        {item.name}
-                    </td>
+                        duration: 3
 
+                    }}
 
-                    <td>
-                        {item.stock}
-                    </td>
-
-
-                    <td>
-                        {item.minStock}
-                    </td>
-
-
-                    <td>
-
-                        <span className="stock-out">
-                            Reorder Required
-                        </span>
-
-                    </td>
-
-
-                </tr>
-
-
-                ))
-
-
-                }
-
-
-
-                </tbody>
-
-
-                </table>
-
-
+                />
 
             </div>
 
+            {/* Statistics */}
 
-        </div>
+            <div className="stats-container">
+
+                <div className="stat-card">
+
+                    <FaBoxes />
+
+                    <h3>Total Low Stock Products</h3>
+
+                    <h2>{products.length}</h2>
+
+                </div>
+
+            </div>
+
+            {/* Table */}
+
+            <div className="table-card">
+
+                <table className="table table-hover">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Product</th>
+
+                            <th>Current Stock</th>
+
+                            <th>Minimum Stock</th>
+
+                            <th>Status</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {
+
+                            products.map((item) => (
+
+                                <tr key={item.id}>
+
+                                    <td>{item.name}</td>
+
+                                    <td>{item.stock}</td>
+
+                                    <td>{item.minStock}</td>
+
+                                    <td>
+
+                                        <span className="badge bg-danger">
+
+                                            <FaExclamationTriangle className="me-1"/>
+
+                                            Reorder Required
+
+                                        </span>
+
+                                    </td>
+
+                                </tr>
+
+                            ))
+
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </motion.div>
 
     );
 

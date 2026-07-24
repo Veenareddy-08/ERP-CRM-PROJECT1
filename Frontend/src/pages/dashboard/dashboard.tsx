@@ -1,11 +1,11 @@
-
 import { motion } from "framer-motion";
 
 import {
   FaUsers,
   FaBox,
   FaRupeeSign,
-  FaTruck
+  FaTruck,
+  FaChartLine,
 } from "react-icons/fa";
 
 import StatCard from "../../components/widges/StatCard";
@@ -23,165 +23,140 @@ export default function Dashboard() {
   return (
 
     <motion.div
-
       className="dashboard"
 
-      initial={{ opacity: 0, y: 40 }}
-
-      animate={{ opacity: 1, y: 0 }}
-
-      transition={{ duration: 0.6 }}
-
+      initial={{ opacity:0 }}
+      animate={{ opacity:1 }}
+      transition={{ duration:.8 }}
     >
 
-      <motion.h1
+      {/* HERO */}
 
-        initial={{ opacity: 0 }}
+      <div className="hero">
 
-        animate={{ opacity: 1 }}
+        <div>
 
-        transition={{ delay: 0.2 }}
+          <h1>🚀 ERP CRM Dashboard</h1>
 
-      >
+          <p>
 
-        🚀 ERP Dashboard
+            Welcome Back 👋
 
-      </motion.h1>
-      <img
-    src="/dashboard.jpg"
-    alt="Dashboard"
-    style={{
-        width:"300px",
-        borderRadius:"20px",
-        margin:"20px 0"
-    }}
-/>
+            Manage Products, Customers,
 
+            Inventory and Sales
 
-      {/* Statistics Cards */}
+            from one place.
 
-      <div className="stats">
+          </p>
 
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.2 }}
-        >
+        </div>
 
-          <StatCard
-            title="Total Customers"
-            value="250"
-            icon={FaUsers}
-          />
+        <motion.img
 
-        </motion.div>
+          src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900"
 
+          className="hero-image"
 
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-        >
+          animate={{
+            y:[0,-15,0]
+          }}
 
-          <StatCard
-            title="Total Products"
-            value="120"
-            icon={FaBox}
-          />
+          transition={{
+            duration:3,
+            repeat:Infinity
+          }}
 
-        </motion.div>
-
-
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-        >
-
-          <StatCard
-            title="Today's Sales"
-            value="₹50,000"
-            icon={FaRupeeSign}
-          />
-
-        </motion.div>
-
-
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-        >
-
-          <StatCard
-            title="Pending Challans"
-            value="35"
-            icon={FaTruck}
-          />
-
-        </motion.div>
+        />
 
       </div>
 
+      {/* KPI */}
 
+      <div className="stats">
 
-      {/* Charts */}
+        <StatCard
+          title="Customers"
+          value="250"
+          icon={FaUsers}
+        />
 
-      <motion.div
+        <StatCard
+          title="Products"
+          value="120"
+          icon={FaBox}
+        />
 
-        className="charts"
+        <StatCard
+          title="Revenue"
+          value="₹50,000"
+          icon={FaRupeeSign}
+        />
 
-        initial={{ opacity: 0 }}
+        <StatCard
+          title="Pending"
+          value="35"
+          icon={FaTruck}
+        />
 
-        animate={{ opacity: 1 }}
+      </div>
 
-        transition={{ delay: 0.5 }}
+      {/* CHARTS */}
 
-      >
+      <div className="charts">
 
         <div className="chart-box">
-          <SalesChart />
+
+          <h3>
+
+            <FaChartLine />
+
+            Sales
+
+          </h3>
+
+          <SalesChart/>
+
         </div>
 
         <div className="chart-box">
-          <RevenueChart />
+
+          <h3>
+
+            Revenue
+
+          </h3>
+
+          <RevenueChart/>
+
         </div>
 
         <div className="chart-box">
-          <InventoryChart />
+
+          <h3>
+
+            Inventory
+
+          </h3>
+
+          <InventoryChart/>
+
         </div>
 
-      </motion.div>
+      </div>
 
+      {/* WIDGETS */}
 
+      <div className="widgets">
 
-      {/* Widgets */}
+        <RecentCustomers/>
 
-      <motion.div
+        <LowStockWidget/>
 
-        className="widgets"
-
-        initial={{ opacity: 0 }}
-
-        animate={{ opacity: 1 }}
-
-        transition={{ delay: 0.8 }}
-
-      >
-
-        <RecentCustomers />
-
-        <LowStockWidget />
-
-      </motion.div>
+      </div>
 
     </motion.div>
 
   );
-  <img
-
-src={dashboardImg}
-
-style={{
-
-width:"300px",
-borderRadius:"20px"
-
-}}
-
-/>
 
 }

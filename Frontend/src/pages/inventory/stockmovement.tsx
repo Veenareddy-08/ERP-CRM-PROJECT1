@@ -1,270 +1,307 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
-export default function StockMovement(){
+import {
+  FaArrowLeft,
+  FaArrowDown,
+  FaArrowUp,
+  FaWarehouse,
+  FaBoxes
+} from "react-icons/fa";
 
+import "../../styles/stockmovement.css";
 
-const [movements, setMovements] = useState([
+export default function StockMovement() {
 
-{
-id:1,
-product:"Rice Bag",
-quantity:50,
-type:"IN",
-reason:"Purchase",
-createdBy:"Admin",
-time:"22-07-2026 10:30 AM"
-},
+  const navigate = useNavigate();
 
+  const [movements, setMovements] = useState([
 
-{
-id:2,
-product:"Cooking Oil",
-quantity:5,
-type:"OUT",
-reason:"Customer Sale",
-createdBy:"Admin",
-time:"22-07-2026 11:00 AM"
-},
+    {
+      id: 1,
+      product: "Rice Bag",
+      quantity: 50,
+      type: "IN",
+      reason: "Purchase",
+      createdBy: "Admin",
+      time: "22-07-2026 10:30 AM"
+    },
 
+    {
+      id: 2,
+      product: "Cooking Oil",
+      quantity: 5,
+      type: "OUT",
+      reason: "Customer Sale",
+      createdBy: "Admin",
+      time: "22-07-2026 11:00 AM"
+    },
 
-{
-id:3,
-product:"Sugar",
-quantity:20,
-type:"IN",
-reason:"Supplier Delivery",
-createdBy:"Manager",
-time:"22-07-2026 12:00 PM"
-}
+    {
+      id: 3,
+      product: "Sugar",
+      quantity: 20,
+      type: "IN",
+      reason: "Supplier Delivery",
+      createdBy: "Manager",
+      time: "22-07-2026 12:00 PM"
+    }
 
-]);
+  ]);
 
+  function addMovement(
+    product: string,
+    quantity: number,
+    type: "IN" | "OUT"
+  ) {
 
+    const newMovement = {
 
-function addMovement(
-product:string,
-quantity:number,
-type:"IN"|"OUT"
-){
+      id: movements.length + 1,
 
+      product,
 
-const newMovement={
+      quantity,
 
-id: movements.length + 1,
+      type,
 
-product,
+      reason: "Manual Update",
 
-quantity,
+      createdBy: "Admin",
 
-type,
+      time: new Date().toLocaleString()
 
-reason:"Manual Update",
+    };
 
-createdBy:"Admin",
+    setMovements([...movements, newMovement]);
 
-time:new Date().toLocaleString()
+  }
 
-};
+  return (
 
+    <motion.div
 
-setMovements([
+      className="movement-page"
 
-...movements,
+      initial={{ opacity: 0 }}
 
-newMovement
+      animate={{ opacity: 1 }}
 
-]);
+    >
 
+      {/* Back Button */}
 
-}
+      <div className="d-flex justify-content-between align-items-center mb-4">
 
+        <button
 
+          className="btn btn-primary back-btn"
 
-return(
+          onClick={() => navigate("/inventory")}
 
-<div className="page-container">
+        >
 
+          <FaArrowLeft className="me-2" />
 
-<div className="table-container">
+          Back to Inventory
 
+        </button>
 
-<h2>
-Stock Movement Log
-</h2>
+      </div>
 
+      {/* Hero */}
 
+      <div className="movement-hero">
 
-<div style={{marginBottom:"20px"}}>
+        <div>
 
+          <h1>
 
-<button
+            Stock Movement
 
-className="save-btn"
+          </h1>
 
-onClick={()=>addMovement(
-"Rice Bag",
-10,
-"IN"
-)}
+          <p>
 
->
+            Track every stock entry and stock exit happening inside your warehouse.
 
-Rice +10
+          </p>
 
-</button>
+        </div>
 
+        <motion.img
 
+          src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=900"
 
-<button
+          className="movement-image"
 
-className="cancel-btn"
+          animate={{ y: [0, -15, 0] }}
 
-style={{marginLeft:"10px"}}
+          transition={{
 
-onClick={()=>addMovement(
-"Rice Bag",
-5,
-"OUT"
-)}
+            repeat: Infinity,
 
->
+            duration: 3
 
-Rice -5
+          }}
 
-</button>
+        />
 
+      </div>
 
-</div>
+      {/* Statistics */}
 
+      <div className="movement-cards">
 
+        <div className="movement-card">
 
+          <FaBoxes />
 
+          <h3>Total Logs</h3>
 
-<table>
+          <h2>{movements.length}</h2>
 
+        </div>
 
-<thead>
+        <div className="movement-card">
 
-<tr>
+          <FaWarehouse />
 
-<th>
-Product
-</th>
+          <h3>Warehouse</h3>
 
-<th>
-Quantity Changed
-</th>
+          <h2>Main Store</h2>
 
-<th>
-Movement Type
-</th>
+        </div>
 
-<th>
-Reason
-</th>
+      </div>
 
-<th>
-Created By
-</th>
+      {/* Buttons */}
 
-<th>
-Timestamp
-</th>
+      <div className="movement-buttons">
 
+        <button
 
-</tr>
+          className="stock-in-btn"
 
-</thead>
+          onClick={() =>
 
+            addMovement("Rice Bag", 10, "IN")
 
+          }
 
-<tbody>
+        >
 
+          <FaArrowDown />
 
-{
+          Stock IN
 
-movements.map((item)=>(
+        </button>
 
+        <button
 
-<tr key={item.id}>
+          className="stock-out-btn"
 
+          onClick={() =>
 
-<td>
-{item.product}
-</td>
+            addMovement("Rice Bag", 5, "OUT")
 
+          }
 
-<td>
-{item.quantity}
-</td>
+        >
 
+          <FaArrowUp />
 
+          Stock OUT
 
-<td>
+        </button>
 
-{
+      </div>
 
-item.type==="IN"
+      {/* Table */}
 
-?
+      <div className="movement-table">
 
-<span className="stock-in">
-IN
-</span>
+        <table className="table table-hover">
 
-:
+          <thead>
 
-<span className="stock-out">
-OUT
-</span>
+            <tr>
 
-}
+              <th>Product</th>
 
+              <th>Quantity</th>
 
-</td>
+              <th>Movement</th>
 
+              <th>Reason</th>
 
+              <th>Created By</th>
 
-<td>
-{item.reason}
-</td>
+              <th>Timestamp</th>
 
+            </tr>
 
-<td>
-{item.createdBy}
-</td>
+          </thead>
 
+          <tbody>
 
-<td>
-{item.time}
-</td>
+            {
 
+              movements.map(item => (
 
+                <tr key={item.id}>
 
-</tr>
+                  <td>{item.product}</td>
 
+                  <td>{item.quantity}</td>
 
-))
+                  <td>
 
+                    {
 
-}
+                      item.type === "IN"
 
+                        ?
 
+                        <span className="badge bg-success">
 
-</tbody>
+                          IN
 
+                        </span>
 
+                        :
 
-</table>
+                        <span className="badge bg-danger">
 
+                          OUT
 
+                        </span>
 
-</div>
+                    }
 
+                  </td>
 
-</div>
+                  <td>{item.reason}</td>
 
+                  <td>{item.createdBy}</td>
 
-)
+                  <td>{item.time}</td>
+
+                </tr>
+
+              ))
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </motion.div>
+
+  );
 
 }

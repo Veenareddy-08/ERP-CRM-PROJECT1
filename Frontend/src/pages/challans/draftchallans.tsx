@@ -1,200 +1,231 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+
+import {
+  FaArrowLeft,
+  FaFileInvoice,
+  FaClipboardList
+} from "react-icons/fa";
+
 import API from "../../api/axios";
 
-type Challan = {
-    id: number;
-    challan_number: string;
-    customer_name?: string;
-    status: string;
-};
+import "../../styles/draftchallans.css";
 
+type Challan = {
+  id: number;
+  challan_number: string;
+  customer_name?: string;
+  status: string;
+};
 
 export default function DraftChallans() {
 
+  const navigate = useNavigate();
 
-    const [challans, setChallans] = useState<Challan[]>([]);
+  const [challans, setChallans] = useState<Challan[]>([]);
+  const [loading, setLoading] = useState(true);
 
-    const [loading, setLoading] = useState(true);
+  useEffect(() => {
 
+    const fetchChallans = async () => {
 
+      try {
 
-    useEffect(() => {
+        const response = await API.get("/challans");
 
+        setChallans(response.data);
 
-        const fetchChallans = async () => {
+      } catch (error) {
 
+        console.log(error);
 
-            try {
+      } finally {
 
+        setLoading(false);
 
-                const response = await API.get("/challans");
+      }
 
+    };
 
-                setChallans(response.data);
+    fetchChallans();
 
+  }, []);
 
+  const draftChallans = challans.filter(
+    (c) => c.status === "DRAFT"
+  );
 
-            } catch(error) {
+  return (
 
+    <motion.div
 
-                console.log(error);
+      className="draft-page"
 
+      initial={{ opacity: 0 }}
 
-            }
-            finally {
+      animate={{ opacity: 1 }}
 
+    >
 
-                setLoading(false);
+      {/* Back Button */}
 
+      <button
 
-            }
+        className="btn btn-primary back-btn"
 
+        onClick={() => navigate("/challans")}
 
-        };
+      >
 
+        <FaArrowLeft className="me-2" />
 
-        fetchChallans();
+        Back
 
+      </button>
 
-    }, []);
+      {/* Hero */}
 
+      <div className="draft-hero">
 
+        <div>
 
+          <h1>
 
-    const draftChallans = challans.filter(
-        (c)=>c.status === "DRAFT"
-    );
+            Draft Challans
 
+          </h1>
 
+          <p>
 
-    return (
+            View all saved draft challans before confirmation.
 
-        <div className="table-container">
-
-
-            <h2>
-                Draft Challans
-            </h2>
-
-
-
-            {
-                loading ?
-
-
-                <p>
-                    Loading...
-                </p>
-
-
-                :
-
-
-                <table>
-
-
-                    <thead>
-
-
-                        <tr>
-
-                            <th>
-                                Challan No
-                            </th>
-
-
-                            <th>
-                                Customer
-                            </th>
-
-
-                            <th>
-                                Status
-                            </th>
-
-
-                        </tr>
-
-
-                    </thead>
-
-
-
-                    <tbody>
-
-
-
-                    {
-
-
-                    draftChallans.length === 0 ?
-
-
-                    <tr>
-
-                        <td colSpan={3}>
-
-                            No Draft Challans Found
-
-                        </td>
-
-                    </tr>
-
-
-                    :
-
-
-                    draftChallans.map((c)=>(
-
-
-                        <tr key={c.id}>
-
-
-                            <td>
-                                {c.challan_number}
-                            </td>
-
-
-                            <td>
-                                {c.customer_name || "Unknown"}
-                            </td>
-
-
-                            <td>
-
-                                <span className="stock-out">
-
-                                    {c.status}
-
-                                </span>
-
-                            </td>
-
-
-                        </tr>
-
-
-                    ))
-
-
-
-                    }
-
-
-
-                    </tbody>
-
-
-
-                </table>
-
-
-            }
-
-
+          </p>
 
         </div>
 
-    );
+        <motion.img
+
+          src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=900"
+
+          className="hero-image"
+
+          animate={{ y: [0, -15, 0] }}
+
+          transition={{
+
+            repeat: Infinity,
+
+            duration: 3
+
+          }}
+
+        />
+
+      </div>
+
+      {/* Statistics */}
+
+      <div className="draft-stats">
+
+        <div className="draft-card">
+
+          <FaClipboardList />
+
+          <h3>Total Drafts</h3>
+
+          <h2>{draftChallans.length}</h2>
+
+        </div>
+
+      </div>
+
+      {/* Table */}
+
+      <div className="draft-table">
+
+        {
+
+          loading ?
+
+          <h3 className="text-white">
+
+            Loading...
+
+          </h3>
+
+          :
+
+          <table className="table table-hover">
+
+            <thead>
+
+              <tr>
+
+                <th>Challan No</th>
+
+                <th>Customer</th>
+
+                <th>Status</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              {
+
+                draftChallans.length === 0 ?
+
+                <tr>
+
+                  <td colSpan={3} className="text-center">
+
+                    No Draft Challans Found
+
+                  </td>
+
+                </tr>
+
+                :
+
+                draftChallans.map((c) => (
+
+                  <tr key={c.id}>
+
+                    <td>{c.challan_number}</td>
+
+                    <td>{c.customer_name || "Unknown"}</td>
+
+                    <td>
+
+                      <span className="badge bg-warning text-dark">
+
+                        <FaFileInvoice className="me-1"/>
+
+                        Draft
+
+                      </span>
+
+                    </td>
+
+                  </tr>
+
+                ))
+
+              }
+
+            </tbody>
+
+          </table>
+
+        }
+
+      </div>
+
+    </motion.div>
+
+  );
 
 }

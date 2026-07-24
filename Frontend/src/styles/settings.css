@@ -1,0 +1,252 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+/* ========================= */
+/* PAGE */
+/* ========================= */
+
+.settings-page{
+
+min-height:100vh;
+
+padding:40px;
+
+background:
+linear-gradient(rgba(8,15,40,.82),rgba(8,15,40,.82)),
+url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1800");
+
+background-size:cover;
+
+background-position:center;
+
+background-attachment:fixed;
+
+}
+
+/* ========================= */
+/* HERO */
+/* ========================= */
+
+.settings-hero{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+background:rgba(255,255,255,.12);
+
+backdrop-filter:blur(18px);
+
+padding:35px;
+
+border-radius:25px;
+
+margin-bottom:35px;
+
+box-shadow:0 20px 40px rgba(0,0,0,.25);
+
+}
+
+.settings-hero h1{
+
+font-size:46px;
+
+font-weight:700;
+
+color:#FFD700;
+
+margin-bottom:10px;
+
+}
+
+.settings-hero p{
+
+font-size:18px;
+
+color:white;
+
+line-height:1.8;
+
+}
+
+.settings-image{
+
+width:360px;
+
+border-radius:20px;
+
+box-shadow:0 20px 40px rgba(0,0,0,.35);
+
+animation:floatImage 4s infinite ease-in-out;
+
+}
+
+@keyframes floatImage{
+
+0%{
+transform:translateY(0);
+}
+
+50%{
+transform:translateY(-15px);
+}
+
+100%{
+transform:translateY(0);
+}
+
+}
+
+/* ========================= */
+/* FORM CARD */
+/* ========================= */
+
+.settings-card{
+
+max-width:700px;
+
+margin:auto;
+
+background:rgba(255,255,255,.12);
+
+backdrop-filter:blur(18px);
+
+padding:40px;
+
+border-radius:25px;
+
+box-shadow:0 20px 40px rgba(0,0,0,.25);
+
+color:white;
+
+}
+
+.settings-card h2{
+
+margin-bottom:30px;
+
+font-size:32px;
+
+font-weight:700;
+
+color:#FFD700;
+
+}
+
+/* ========================= */
+/* LABEL */
+/* ========================= */
+
+.settings-card label{
+
+display:block;
+
+margin-bottom:8px;
+
+font-weight:600;
+
+font-size:17px;
+
+}
+
+/* ========================= */
+/* INPUT */
+/* ========================= */
+
+.form-control{
+
+height:55px;
+
+border-radius:12px;
+
+font-size:16px;
+
+padding-left:15px;
+
+border:none;
+
+box-shadow:none;
+
+}
+
+.form-control:focus{
+
+border:2px solid #2563eb;
+
+box-shadow:none;
+
+}
+
+/* ========================= */
+/* BUTTON */
+/* ========================= */
+
+.save-btn{
+
+width:100%;
+
+height:55px;
+
+font-size:18px;
+
+font-weight:600;
+
+border-radius:15px;
+
+transition:.3s;
+
+}
+
+.save-btn:hover{
+
+transform:translateY(-4px);
+
+box-shadow:0 15px 25px rgba(0,0,0,.3);
+
+}
+
+/* ========================= */
+/* RESPONSIVE */
+/* ========================= */
+
+@media(max-width:900px){
+
+.settings-hero{
+
+flex-direction:column;
+
+text-align:center;
+
+gap:30px;
+
+}
+
+.settings-image{
+
+width:100%;
+
+max-width:320px;
+
+}
+
+.settings-card{
+
+padding:25px;
+
+}
+
+.settings-card h2{
+
+font-size:28px;
+
+}
+
+}

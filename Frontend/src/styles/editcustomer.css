@@ -1,0 +1,210 @@
+/* Google Font */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+/* ===========================
+   BACKGROUND
+=========================== */
+
+.edit-product-page{
+
+min-height:100vh;
+
+background:
+linear-gradient(rgba(5,20,45,.82),rgba(5,20,45,.82)),
+url("https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920");
+
+background-size:cover;
+
+background-position:center;
+
+background-attachment:fixed;
+
+overflow:hidden;
+
+}
+
+/* ===========================
+   OVERLAY
+=========================== */
+
+.overlay{
+
+display:flex;
+
+min-height:100vh;
+
+backdrop-filter:blur(6px);
+
+}
+
+/* ===========================
+   LEFT PANEL
+=========================== */
+
+.left-panel{
+
+width:45%;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+padding:50px;
+
+color:white;
+
+}
+
+.left-panel h1{
+
+font-size:52px;
+
+font-weight:700;
+
+color:#FFD700;
+
+margin-top:30px;
+
+}
+
+.left-panel p{
+
+font-size:18px;
+
+line-height:1.9;
+
+margin-top:20px;
+
+text-align:center;
+
+max-width:480px;
+
+color:#f1f5f9;
+
+}
+
+/* Floating Product Image */
+
+.product-image{
+
+width:420px;
+
+border-radius:25px;
+
+box-shadow:0 25px 50px rgba(0,0,0,.45);
+
+animation:floatImage 4s ease-in-out infinite;
+
+}
+
+@keyframes floatImage{
+
+0%{
+transform:translateY(0px);
+}
+
+50%{
+transform:translateY(-18px);
+}
+
+100%{
+transform:translateY(0px);
+}
+
+/* Small floating animation */
+
+}
+
+/* ===========================
+   RIGHT PANEL
+=========================== */
+
+.right-panel{
+
+width:55%;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+padding:40px;
+
+}
+
+/* ===========================
+   GLASS CARD
+=========================== */
+
+.edit-card{
+
+width:100%;
+
+max-width:760px;
+
+padding:40px;
+
+border-radius:30px;
+
+background:rgba(255,255,255,.12);
+
+backdrop-filter:blur(22px);
+
+border:1px solid rgba(255,255,255,.18);
+
+box-shadow:0 20px 45px rgba(0,0,0,.35);
+
+color:white;
+
+}
+
+.edit-card h2{
+
+display:flex;
+
+align-items:center;
+
+gap:15px;
+
+font-size:34px;
+
+font-weight:700;
+
+margin-bottom:30px;
+
+color:#FFD700;
+
+}
+
+/* ===========================
+   FORM GRID
+=========================== */
+
+.grid{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:20px;
+
+}
+
+.full{
+
+grid-column:1/3;
+
+}

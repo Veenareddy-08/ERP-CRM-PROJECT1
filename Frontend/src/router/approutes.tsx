@@ -21,7 +21,7 @@ import ConfirmedChallans from "../pages/challans/confirmedchallans";
 import Reports from "../pages/reports/reports";
 import Settings from "../pages/setting/settings";
 import Challans from "../pages/challans/challans";
-
+import Signup from "../pages/auth/sighup";
 export default function AppRoutes() {
 
   return (
@@ -37,6 +37,11 @@ export default function AppRoutes() {
           path="/" 
           element={<Login />} 
         />
+
+        <Route
+  path="/signup"
+  element={<Signup />}
+/>
 
 
 

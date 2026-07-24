@@ -33,7 +33,7 @@ req: Request,
 res: Response
 ) => {
 
-    const product = await productService.getProductByid(
+    const product = await productService.getProductById(
         Number(req.params.id)
     );
 

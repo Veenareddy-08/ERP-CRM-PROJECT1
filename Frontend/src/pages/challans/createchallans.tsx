@@ -1,530 +1,413 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import {
+  FaArrowLeft,
+  FaFileInvoice,
+  FaPlus,
+  FaSave,
+  FaCheckCircle
+} from "react-icons/fa";
+
 import API from "../../api/axios";
+
+import "../../styles/createchallan.css";
 
 export default function CreateChallan() {
 
+  const navigate = useNavigate();
 
-const challanNo = "CH-" + Date.now();
+  const challanNo = "CH-" + Date.now();
 
+  const [customer, setCustomer] = useState("");
 
-const [customer,setCustomer] = useState("");
+  const [customers, setCustomers] = useState<any[]>([]);
 
-const [customers,setCustomers] = useState<any[]>([]);
+  const [availableProducts, setAvailableProducts] = useState<any[]>([]);
 
+  const [items, setItems] = useState([
+    {
+      product_id: "",
+      product_name: "",
+      price: 0,
+      stock: 0,
+      quantity: 1
+    }
+  ]);
 
-const [availableProducts,setAvailableProducts] = useState<any[]>([]);
+  useEffect(() => {
 
+    const fetchData = async () => {
 
+      try {
 
-const [items,setItems] = useState<any[]>([
+        const customerResponse = await API.get("/customers");
+        setCustomers(customerResponse.data);
 
-{
-product_id:"",
-product_name:"",
-price:0,
-stock:0,
-quantity:1
-}
+        const productResponse = await API.get("/products");
+        setAvailableProducts(productResponse.data);
 
-]);
+      } catch (err) {
 
+        console.log(err);
 
+      }
 
+    };
 
-useEffect(()=>{
+    fetchData();
 
+  }, []);
 
-const fetchData = async()=>{
+  function selectProduct(index: number, id: number) {
 
+    const product = availableProducts.find((p) => p.id === id);
 
-try{
+    const updated = [...items];
 
+    updated[index] = {
 
-const customerResponse = await API.get("/customers");
+      ...updated[index],
 
-setCustomers(customerResponse.data);
+      product_id: product.id,
 
+      product_name: product.name,
 
+      price: product.price,
 
-const productResponse = await API.get("/products");
+      stock: product.stock
 
-setAvailableProducts(productResponse.data);
+    };
 
+    setItems(updated);
 
+  }
 
-}
+  function changeQuantity(index: number, value: number) {
 
-catch(error){
+    const updated = [...items];
 
-console.log(error);
+    updated[index].quantity = value;
 
-}
+    setItems(updated);
 
+  }
 
-};
+  function addProduct() {
 
+    setItems([
+      ...items,
+      {
+        product_id: "",
+        product_name: "",
+        price: 0,
+        stock: 0,
+        quantity: 1
+      }
+    ]);
 
-fetchData();
+  }
 
+  async function saveDraft() {
 
-},[]);
+    try {
 
+      await API.post("/challans", {
 
+        challan_number: challanNo,
 
+        customer_id: customer,
 
+        status: "DRAFT",
 
-function selectProduct(
-index:number,
-id:number
-){
+        items
 
+      });
 
-const product = availableProducts.find(
-(p)=>p.id===id
-);
+      alert("Draft Saved Successfully");
 
+    } catch {
 
+      alert("Failed");
 
-const updated=[...items];
+    }
 
+  }
 
-updated[index]={
+  async function confirmChallan() {
 
-...updated[index],
+    for (const item of items) {
 
-product_id:product.id,
+      if (item.quantity > item.stock) {
 
-product_name:product.name,
+        alert(item.product_name + " has insufficient stock");
 
-price:product.price,
+        return;
 
-stock:product.stock
+      }
 
-};
+    }
 
+    await API.post("/challans", {
 
+      challan_number: challanNo,
 
-setItems(updated);
+      customer_id: customer,
 
+      status: "CONFIRMED",
 
+      items
 
-}
+    });
 
+    alert("Challan Confirmed");
 
+  }
 
+  return (
 
+    <motion.div
 
+      className="challan-page"
 
-function changeQuantity(
-index:number,
-value:number
-){
+      initial={{ opacity: 0 }}
 
+      animate={{ opacity: 1 }}
 
-const updated=[...items];
+    >
 
-updated[index].quantity=value;
+      <button
 
+        className="btn btn-light back-btn"
 
-setItems(updated);
+        onClick={() => navigate("/challans")}
 
+      >
 
-}
+        <FaArrowLeft className="me-2"/>
 
+        Back
 
+      </button>
 
+      <div className="challan-hero">
 
+        <div>
 
+          <h1>Create Sales Challan</h1>
 
-function addProduct(){
+          <p>Create and dispatch wholesale challans instantly.</p>
 
+        </div>
 
-setItems([
+        <motion.img
 
-...items,
+          src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=900"
 
-{
-product_id:"",
-product_name:"",
-price:0,
-stock:0,
-quantity:1
-}
+          className="hero-image"
 
-]);
+          animate={{ y: [0, -15, 0] }}
 
+          transition={{ repeat: Infinity, duration: 3 }}
 
-}
+        />
 
+      </div>
 
+      <div className="challan-card">
 
+        <h2>
 
+          <FaFileInvoice />
 
+          Sales Challan
 
-async function saveDraft(){
+        </h2>
 
+        <label>Challan Number</label>
 
-try{
+        <input
 
+          value={challanNo}
 
-await API.post("/challans",{
+          readOnly
 
+        />
 
-challan_number:challanNo,
+        <label>Select Customer</label>
 
-customer_id:customer,
+        <select
 
-status:"DRAFT",
+          value={customer}
 
-items:items
+          onChange={(e) => setCustomer(e.target.value)}
 
+        >
 
-});
+          <option>Select Customer</option>
 
+          {
 
-alert("Draft Saved");
+            customers.map((c) => (
 
+              <option
 
-}
+                key={c.id}
 
-catch(error){
+                value={c.id}
 
-console.log(error);
+              >
 
-alert("Failed to save draft");
+                {c.name}
 
-}
+              </option>
 
+            ))
 
-}
+          }
 
+        </select>
 
+        <h3>Products</h3>
 
+        {
 
+          items.map((item, index) => (
 
+            <div
 
+              className="product-row"
 
-async function confirmChallan(){
+              key={index}
 
+            >
 
+              <select
 
-for(const item of items){
+                value={item.product_id}
 
+                onChange={(e) =>
 
-if(item.quantity > item.stock){
+                  selectProduct(
 
+                    index,
 
-alert(
-item.product_name+" insufficient stock"
-);
+                    Number(e.target.value)
 
+                  )
 
-return;
+                }
 
+              >
 
-}
+                <option>Select Product</option>
 
+                {
 
-}
+                  availableProducts.map((p) => (
 
+                    <option
 
+                      key={p.id}
 
+                      value={p.id}
 
+                    >
 
-try{
+                      {p.name}
 
+                    </option>
 
-await API.post("/challans",{
+                  ))
 
+                }
 
-challan_number:challanNo,
+              </select>
 
-customer_id:customer,
+              <input
 
-status:"CONFIRMED",
+                type="number"
 
-items:items
+                value={item.quantity}
 
+                onChange={(e) =>
 
-});
+                  changeQuantity(
 
+                    index,
 
-alert("Challan Confirmed");
+                    Number(e.target.value)
 
+                  )
 
-}
+                }
 
-catch(error){
+              />
 
-console.log(error);
+              <input
 
-}
+                value={item.stock}
 
+                readOnly
 
+              />
 
-}
+            </div>
 
+          ))
 
+        }
 
+        <button
 
+          className="btn btn-primary mt-3"
 
+          onClick={addProduct}
 
-return(
+        >
 
+          <FaPlus />
 
-<div className="form-container">
+          Add Product
 
+        </button>
 
-<h2>
-Create Sales Challan
-</h2>
+        <div className="button-group">
 
+          <button
 
+            className="btn btn-warning"
 
-<label>
-Challan Number
-</label>
+            onClick={saveDraft}
 
+          >
 
-<input
-value={challanNo}
-readOnly
-/>
+            <FaSave />
 
+            Save Draft
 
+          </button>
 
+          <button
 
-<label>
-Customer
-</label>
+            className="btn btn-success"
 
+            onClick={confirmChallan}
 
-<select
+          >
 
-value={customer}
+            <FaCheckCircle />
 
-onChange={(e)=>
-setCustomer(e.target.value)
-}
+            Confirm Challan
 
->
+          </button>
 
+        </div>
 
-<option value="">
-Select Customer
-</option>
+      </div>
 
+    </motion.div>
 
-{
-
-customers.map((c)=>(
-
-
-<option
-
-key={c.id}
-
-value={c.id}
-
->
-
-{c.name}
-
-</option>
-
-
-))
-
-
-}
-
-
-</select>
-
-
-
-
-
-<h3>
-Products
-</h3>
-
-
-
-
-{
-
-items.map((item,index)=>(
-
-
-<div
-
-key={index}
-
-style={{
-
-display:"grid",
-
-gridTemplateColumns:"2fr 1fr 1fr",
-
-gap:"15px",
-
-marginBottom:"15px"
-
-}}
-
->
-
-
-
-<select
-
-value={item.product_id}
-
-onChange={(e)=>
-
-selectProduct(
-index,
-Number(e.target.value)
-)
-
-}
-
->
-
-
-<option value="">
-Select Product
-</option>
-
-
-{
-
-availableProducts.map((p)=>(
-
-
-<option
-
-key={p.id}
-
-value={p.id}
-
->
-
-{p.name}
-
-</option>
-
-
-))
-
-
-}
-
-
-
-</select>
-
-
-
-
-<input
-
-type="number"
-
-value={item.quantity}
-
-onChange={(e)=>
-
-changeQuantity(
-index,
-Number(e.target.value)
-)
-
-}
-
-/>
-
-
-
-<input
-
-value={item.stock}
-
-readOnly
-
-/>
-
-
-
-
-</div>
-
-
-))
-
-
-}
-
-
-
-
-<button
-
-className="save-btn"
-
-onClick={addProduct}
-
->
-
-+ Add Product
-
-</button>
-
-
-
-<br/><br/>
-
-
-
-
-<button
-
-className="save-btn"
-
-onClick={saveDraft}
-
->
-
-Save Draft
-
-</button>
-
-
-
-
-<button
-
-className="cancel-btn"
-
-style={{
-marginLeft:"15px"
-}}
-
-onClick={confirmChallan}
-
->
-
-Confirm Challan
-
-</button>
-
-
-
-</div>
-
-
-);
-
+  );
 
 }

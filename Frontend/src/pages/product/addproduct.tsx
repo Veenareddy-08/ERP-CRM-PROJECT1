@@ -1,227 +1,342 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+
+import {
+  FaBoxOpen,
+  FaBarcode,
+  FaLayerGroup,
+  FaWarehouse,
+  FaRupeeSign,
+  FaCubes,
+  FaArrowLeft,
+  FaSave
+} from "react-icons/fa";
+
 import API from "../../api/axios";
+import "../../styles/addproduct.css";
 
 export default function AddProduct() {
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const [product, setProduct] = useState({
+  const [product, setProduct] = useState({
 
-        name: "",
-        sku: "",
-        category: "",
-        price: "",
-        stock: "",
-        minStock: "",
-        location: ""
+    name: "",
+    sku: "",
+    category: "",
+    price: "",
+    stock: "",
+    minStock: "",
+    location: ""
+
+  });
+
+  const handleChange = (
+    field: string,
+    value: string
+  ) => {
+
+    setProduct({
+
+      ...product,
+
+      [field]: value
 
     });
 
-    function handleChange(
-        field: string,
-        value: string
-    ) {
+  };
 
-        setProduct({
+  const saveProduct = async () => {
 
-            ...product,
+    try {
 
-            [field]: value
+      await API.post("/products", {
 
-        });
+        name: product.name,
+        sku: product.sku,
+        category: product.category,
+        price: Number(product.price),
+        stock: Number(product.stock),
+        minStock: Number(product.minStock),
+        location: product.location
 
-    }
+      });
 
-    async function saveProduct() {
+      alert("Product Added Successfully");
 
-        try {
-
-            await API.post("/products", {
-
-                name: product.name,
-                sku: product.sku,
-                category: product.category,
-                price: Number(product.price),
-                stock: Number(product.stock),
-                minStock: Number(product.minStock),
-                location: product.location
-
-            });
-
-            alert("Product Added Successfully");
-
-            navigate("/products");
-
-        }
-        catch (error) {
-
-            console.log(error);
-
-            alert("Failed to Add Product");
-
-        }
+      navigate("/products");
 
     }
 
-    return (
+    catch (err) {
 
-        <div className="dashboard">
+      console.log(err);
 
-            <div className="form-card">
+      alert("Unable to Add Product");
 
-                <h1>
-                    Add Product
-                </h1>
+    }
 
-                <div className="input-field">
+  };
 
-                    <label>
-                        Product Name
-                    </label>
+  return (
 
-                    <input
+    <div className="add-product-page">
 
-                        value={product.name}
+      <div className="overlay">
 
-                        onChange={(e) =>
-                            handleChange("name", e.target.value)
-                        }
+        {/* LEFT */}
 
-                    />
+        <motion.div
 
-                </div>
+          className="left-panel"
 
-                <div className="input-field">
+          initial={{ x: -80, opacity: 0 }}
 
-                    <label>
-                        SKU Code
-                    </label>
+          animate={{ x: 0, opacity: 1 }}
 
-                    <input
+        >
 
-                        value={product.sku}
+          <motion.img
 
-                        onChange={(e) =>
-                            handleChange("sku", e.target.value)
-                        }
+            src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=900"
 
-                    />
+            className="warehouse-image"
 
-                </div>
+            animate={{ y: [0, -15, 0] }}
 
-                <div className="input-field">
+            transition={{
 
-                    <label>
-                        Category
-                    </label>
+              repeat: Infinity,
 
-                    <input
+              duration: 3
 
-                        value={product.category}
+            }}
 
-                        onChange={(e) =>
-                            handleChange("category", e.target.value)
-                        }
+          />
 
-                    />
+          <h1>Add Products</h1>
 
-                </div>
+          <p>
 
-                <div className="input-field">
+            Create new products and manage inventory efficiently using the ERP CRM system.
 
-                    <label>
-                        Unit Price
-                    </label>
+          </p>
 
-                    <input
+        </motion.div>
 
-                        type="number"
+        {/* RIGHT */}
 
-                        value={product.price}
+        <motion.div
 
-                        onChange={(e) =>
-                            handleChange("price", e.target.value)
-                        }
+          className="right-panel"
 
-                    />
+          initial={{ x: 80, opacity: 0 }}
 
-                </div>
+          animate={{ x: 0, opacity: 1 }}
 
-                <div className="input-field">
+        >
 
-                    <label>
-                        Current Stock
-                    </label>
+          <div className="product-card">
 
-                    <input
+            <div className="top-bar">
 
-                        type="number"
+              <button
 
-                        value={product.stock}
+                className="back-btn"
 
-                        onChange={(e) =>
-                            handleChange("stock", e.target.value)
-                        }
+                onClick={() => navigate("/products")}
 
-                    />
+              >
 
-                </div>
+                <FaArrowLeft />
 
-                <div className="input-field">
+                Back
 
-                    <label>
-                        Minimum Stock Alert Quantity
-                    </label>
-
-                    <input
-
-                        type="number"
-
-                        value={product.minStock}
-
-                        onChange={(e) =>
-                            handleChange("minStock", e.target.value)
-                        }
-
-                    />
-
-                </div>
-
-                <div className="input-field">
-
-                    <label>
-                        Warehouse Location
-                    </label>
-
-                    <input
-
-                        value={product.location}
-
-                        onChange={(e) =>
-                            handleChange("location", e.target.value)
-                        }
-
-                    />
-
-                </div>
-
-                <button
-
-                    className="btn"
-
-                    onClick={saveProduct}
-
-                >
-
-                    Save Product
-
-                </button>
+              </button>
 
             </div>
 
-        </div>
+            <h2>
 
-    );
+              <FaBoxOpen />
+
+              Add Product
+
+            </h2>
+
+            <div className="form-grid">
+
+              <div className="input-box">
+
+                <FaBoxOpen />
+
+                <input
+
+                  placeholder="Product Name"
+
+                  value={product.name}
+
+                  onChange={(e) =>
+
+                    handleChange("name", e.target.value)
+
+                  }
+
+                />
+
+              </div>
+
+              <div className="input-box">
+
+                <FaBarcode />
+
+                <input
+
+                  placeholder="SKU"
+
+                  value={product.sku}
+
+                  onChange={(e) =>
+
+                    handleChange("sku", e.target.value)
+
+                  }
+
+                />
+
+              </div>
+
+              <div className="input-box">
+
+                <FaLayerGroup />
+
+                <input
+
+                  placeholder="Category"
+
+                  value={product.category}
+
+                  onChange={(e) =>
+
+                    handleChange("category", e.target.value)
+
+                  }
+
+                />
+
+              </div>
+
+              <div className="input-box">
+
+                <FaRupeeSign />
+
+                <input
+
+                  type="number"
+
+                  placeholder="Price"
+
+                  value={product.price}
+
+                  onChange={(e) =>
+
+                    handleChange("price", e.target.value)
+
+                  }
+
+                />
+
+              </div>
+
+              <div className="input-box">
+
+                <FaCubes />
+
+                <input
+
+                  type="number"
+
+                  placeholder="Current Stock"
+
+                  value={product.stock}
+
+                  onChange={(e) =>
+
+                    handleChange("stock", e.target.value)
+
+                  }
+
+                />
+
+              </div>
+
+              <div className="input-box">
+
+                <FaCubes />
+
+                <input
+
+                  type="number"
+
+                  placeholder="Minimum Stock"
+
+                  value={product.minStock}
+
+                  onChange={(e) =>
+
+                    handleChange("minStock", e.target.value)
+
+                  }
+
+                />
+
+              </div>
+
+              <div className="input-box full">
+
+                <FaWarehouse />
+
+                <input
+
+                  placeholder="Warehouse Location"
+
+                  value={product.location}
+
+                  onChange={(e) =>
+
+                    handleChange("location", e.target.value)
+
+                  }
+
+                />
+
+              </div>
+
+            </div>
+
+            <button
+
+              className="save-btn"
+
+              onClick={saveProduct}
+
+            >
+
+              <FaSave />
+
+              Save Product
+
+            </button>
+
+          </div>
+
+        </motion.div>
+
+      </div>
+
+    </div>
+
+  );
 
 }

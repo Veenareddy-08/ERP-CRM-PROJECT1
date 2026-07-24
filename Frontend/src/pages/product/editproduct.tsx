@@ -1,201 +1,333 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import "./../../styles/dashboard.css";
+import { motion } from "framer-motion";
+
+import {
+FaBoxOpen,
+FaBarcode,
+FaTags,
+FaRupeeSign,
+FaWarehouse,
+FaMapMarkerAlt
+} from "react-icons/fa";
+
 import API from "../../api/axios";
 
-export default function EditProduct() {
 
-    const navigate = useNavigate();
-    const { id } = useParams();
+export default function EditProduct(){
 
-    const [product, setProduct] = useState({
-        name: "",
-        sku: "",
-        category: "",
-        price: "",
-        stock: "",
-        minStock: "",
-        location: ""
-    });
+const navigate=useNavigate();
 
-    useEffect(() => {
+const {id}=useParams();
 
-        const fetchProduct = async () => {
+const [product,setProduct]=useState({
 
-            try {
+name:"",
+sku:"",
+category:"",
+price:"",
+stock:"",
+minStock:"",
+location:""
 
-                const response = await API.get(`/products/${id}`);
+});
 
-                setProduct({
-                    name: response.data.name || "",
-                    sku: response.data.sku || "",
-                    category: response.data.category || "",
-                    price: String(response.data.price || ""),
-                    stock: String(response.data.stock || ""),
-                    minStock: String(response.data.minStock || ""),
-                    location: response.data.location || ""
-                });
+useEffect(()=>{
 
-            } catch (error) {
+const fetchProduct=async()=>{
 
-                console.log(error);
-                alert("Failed to load product");
+try{
 
-            }
+const response=await API.get(`/products/${id}`);
 
-        };
+setProduct({
 
-        fetchProduct();
+name:response.data.name||"",
+sku:response.data.sku||"",
+category:response.data.category||"",
+price:String(response.data.price||""),
+stock:String(response.data.stock||""),
+minStock:String(response.data.minStock||""),
+location:response.data.location||""
 
-    }, [id]);
+});
 
-    const handleChange = (field: string, value: string) => {
+}
 
-        setProduct({
+catch(err){
 
-            ...product,
-            [field]: value
+console.log(err);
 
-        });
+}
 
-    };
+};
 
-    const updateProduct = async () => {
+fetchProduct();
 
-        try {
+},[id]);
 
-            await API.put(`/products/${id}`, {
+function handleChange(field:string,value:string){
 
-                name: product.name,
-                sku: product.sku,
-                category: product.category,
-                price: Number(product.price),
-                stock: Number(product.stock),
-                minStock: Number(product.minStock),
-                location: product.location
+setProduct({
 
-            });
+...product,
 
-            alert("Product Updated Successfully");
+[field]:value
 
-            navigate("/products");
+});
 
-        } catch (error) {
+}
 
-            console.log(error);
-            alert("Failed to update product");
+async function updateProduct(){
 
-        }
+try{
 
-    };
+await API.put(`/products/${id}`,{
 
-    return (
+...product,
 
-        <div className="page-container">
+price:Number(product.price),
+stock:Number(product.stock),
+minStock:Number(product.minStock)
 
-            <div className="form-container">
+});
 
-                <h2>Edit Product</h2>
+alert("Product Updated Successfully");
 
-                <div className="form-grid">
+navigate("/products");
 
-                    <div className="form-group">
-                        <label>Product Name</label>
-                        <input
-                            value={product.name}
-                            onChange={(e) =>
-                                handleChange("name", e.target.value)
-                            }
-                        />
-                    </div>
+}
 
-                    <div className="form-group">
-                        <label>SKU Code</label>
-                        <input
-                            value={product.sku}
-                            onChange={(e) =>
-                                handleChange("sku", e.target.value)
-                            }
-                        />
-                    </div>
+catch(err){
 
-                    <div className="form-group">
-                        <label>Category</label>
-                        <input
-                            value={product.category}
-                            onChange={(e) =>
-                                handleChange("category", e.target.value)
-                            }
-                        />
-                    </div>
+console.log(err);
 
-                    <div className="form-group">
-                        <label>Unit Price (₹)</label>
-                        <input
-                            type="number"
-                            value={product.price}
-                            onChange={(e) =>
-                                handleChange("price", e.target.value)
-                            }
-                        />
-                    </div>
+alert("Update Failed");
 
-                    <div className="form-group">
-                        <label>Current Stock</label>
-                        <input
-                            type="number"
-                            value={product.stock}
-                            onChange={(e) =>
-                                handleChange("stock", e.target.value)
-                            }
-                        />
-                    </div>
+}
 
-                    <div className="form-group">
-                        <label>Minimum Stock Alert</label>
-                        <input
-                            type="number"
-                            value={product.minStock}
-                            onChange={(e) =>
-                                handleChange("minStock", e.target.value)
-                            }
-                        />
-                    </div>
+}
 
-                    <div className="form-group full">
-                        <label>Warehouse Location</label>
-                        <input
-                            value={product.location}
-                            onChange={(e) =>
-                                handleChange("location", e.target.value)
-                            }
-                        />
-                    </div>
+return(
 
-                </div>
+<div className="edit-product-page">
 
-                <div className="button-area">
+<div className="overlay">
 
-                    <button
-                        className="save-btn"
-                        onClick={updateProduct}
-                    >
-                        Update Product
-                    </button>
+<div className="left-panel">
 
-                    <button
-                        className="cancel-btn"
-                        onClick={() => navigate("/products")}
-                    >
-                        Cancel
-                    </button>
+<motion.img
 
-                </div>
+src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=900"
 
-            </div>
+className="product-image"
 
-        </div>
+animate={{y:[0,-15,0]}}
 
-    );
+transition={{
+
+repeat:Infinity,
+
+duration:3
+
+}}
+
+/>
+
+<h1>Edit Product</h1>
+
+<p>
+
+Update inventory information
+
+Manage warehouse stock
+
+Modify pricing
+
+Track inventory efficiently
+
+</p>
+
+</div>
+
+<div className="right-panel">
+
+<motion.div
+
+className="edit-card"
+
+initial={{x:100,opacity:0}}
+
+animate={{x:0,opacity:1}}
+
+>
+
+<h2>
+
+<FaBoxOpen/>
+
+Update Product
+
+</h2>
+
+<div className="grid">
+
+<div className="input-box">
+
+<FaBoxOpen/>
+
+<input
+
+placeholder="Product Name"
+
+value={product.name}
+
+onChange={(e)=>handleChange("name",e.target.value)}
+
+/>
+
+</div>
+
+<div className="input-box">
+
+<FaBarcode/>
+
+<input
+
+placeholder="SKU"
+
+value={product.sku}
+
+onChange={(e)=>handleChange("sku",e.target.value)}
+
+/>
+
+</div>
+
+<div className="input-box">
+
+<FaTags/>
+
+<input
+
+placeholder="Category"
+
+value={product.category}
+
+onChange={(e)=>handleChange("category",e.target.value)}
+
+/>
+
+</div>
+
+<div className="input-box">
+
+<FaRupeeSign/>
+
+<input
+
+type="number"
+
+placeholder="Price"
+
+value={product.price}
+
+onChange={(e)=>handleChange("price",e.target.value)}
+
+/>
+
+</div>
+
+<div className="input-box">
+
+<FaWarehouse/>
+
+<input
+
+type="number"
+
+placeholder="Stock"
+
+value={product.stock}
+
+onChange={(e)=>handleChange("stock",e.target.value)}
+
+/>
+
+</div>
+
+<div className="input-box">
+
+<FaWarehouse/>
+
+<input
+
+type="number"
+
+placeholder="Minimum Stock"
+
+value={product.minStock}
+
+onChange={(e)=>handleChange("minStock",e.target.value)}
+
+/>
+
+</div>
+
+<div className="input-box full">
+
+<FaMapMarkerAlt/>
+
+<input
+
+placeholder="Warehouse Location"
+
+value={product.location}
+
+onChange={(e)=>handleChange("location",e.target.value)}
+
+/>
+
+</div>
+
+</div>
+
+<div className="buttons">
+
+<button
+
+className="update-btn"
+
+onClick={updateProduct}
+
+>
+
+Update Product
+
+</button>
+
+<button
+
+className="cancel-btn"
+
+onClick={()=>navigate("/products")}
+
+>
+
+Cancel
+
+</button>
+
+</div>
+
+</motion.div>
+
+</div>
+
+</div>
+
+</div>
+
+);
 
 }

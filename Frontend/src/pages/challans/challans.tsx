@@ -1,96 +1,167 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
-export default function Challans(){
+import {
+  FaFileInvoice,
+  FaClipboardList,
+  FaCheckCircle
+} from "react-icons/fa";
 
-return(
+import "../../styles/challans.css";
 
-<div className="page-container">
+export default function Challans() {
 
+  return (
 
-<div className="table-container">
+    <motion.div
 
+      className="challan-page"
 
-<h2>
-Challan Management
-</h2>
+      initial={{ opacity: 0 }}
 
+      animate={{ opacity: 1 }}
 
+    >
 
-<div className="stats-grid">
+      {/* HERO */}
 
+      <div className="challan-hero">
 
-<div className="stat-card">
+        <div>
 
-<h3>
-Create Challan
-</h3>
+          <h1>
 
-<Link to="/challans/create">
+            Challan Management
 
-<button className="save-btn">
+          </h1>
 
-Create
+          <p>
 
-</button>
+            Create, manage and monitor all challans
+            in one centralized ERP dashboard.
 
-</Link>
+          </p>
 
-</div>
+        </div>
 
+        <motion.img
 
+          src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=900"
 
+          className="challan-image"
 
-<div className="stat-card">
+          animate={{ y: [0, -15, 0] }}
 
-<h3>
-Draft Challans
-</h3>
+          transition={{
 
-<Link to="/challans/draft">
+            repeat: Infinity,
 
-<button className="save-btn">
+            duration: 3
 
-View Drafts
+          }}
 
-</button>
+        />
 
-</Link>
+      </div>
 
-</div>
+      {/* CARDS */}
 
+      <div className="challan-grid">
 
+        <motion.div
 
+          whileHover={{ scale: 1.05 }}
 
+          className="challan-card"
 
-<div className="stat-card">
+        >
 
-<h3>
-Confirmed Challans
-</h3>
+          <FaFileInvoice />
 
-<Link to="/challans/confirmed">
+          <h3>Create Challan</h3>
 
-<button className="save-btn">
+          <p>
 
-View Confirmed
+            Create a brand new delivery challan.
 
-</button>
+          </p>
 
-</Link>
+          <Link to="/challans/create">
 
-</div>
+            <button>
 
+              Create
 
+            </button>
 
-</div>
+          </Link>
 
+        </motion.div>
 
+        <motion.div
 
-</div>
+          whileHover={{ scale: 1.05 }}
 
+          className="challan-card"
 
-</div>
+        >
 
-)
+          <FaClipboardList />
+
+          <h3>Draft Challans</h3>
+
+          <p>
+
+            Review all saved draft challans.
+
+          </p>
+
+          <Link to="/challans/draft">
+
+            <button>
+
+              View Drafts
+
+            </button>
+
+          </Link>
+
+        </motion.div>
+
+        <motion.div
+
+          whileHover={{ scale: 1.05 }}
+
+          className="challan-card"
+
+        >
+
+          <FaCheckCircle />
+
+          <h3>Confirmed Challans</h3>
+
+          <p>
+
+            View approved and dispatched challans.
+
+          </p>
+
+          <Link to="/challans/confirmed">
+
+            <button>
+
+              View Confirmed
+
+            </button>
+
+          </Link>
+
+        </motion.div>
+
+      </div>
+
+    </motion.div>
+
+  );
 
 }

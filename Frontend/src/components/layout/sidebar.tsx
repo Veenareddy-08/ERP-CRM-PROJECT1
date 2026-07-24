@@ -1,157 +1,76 @@
-import { Link } from "react-router-dom";
-
+import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
 import {
-    FaHome,
-    FaUsers,
-    FaBox,
-    FaWarehouse,
-    FaFileInvoice,
-    FaChartBar,
-    FaCog
+  FaBars,
+  FaHome,
+  FaUsers,
+  FaBox,
+  FaWarehouse,
+  FaFileInvoice,
+  FaChartBar,
+  FaCog
 } from "react-icons/fa";
-
 
 export default function Sidebar() {
 
+  const [open, setOpen] = useState(true);
+  const location = useLocation();
 
-return (
+  const menus = [
+    { name: "Dashboard", icon: <FaHome />, path: "/dashboard" },
+    { name: "Customers", icon: <FaUsers />, path: "/customers" },
+    { name: "Products", icon: <FaBox />, path: "/products" },
+    { name: "Inventory", icon: <FaWarehouse />, path: "/inventory" },
+    { name: "Challans", icon: <FaFileInvoice />, path: "/challans" },
+    { name: "Reports", icon: <FaChartBar />, path: "/reports" },
+    { name: "Settings", icon: <FaCog />, path: "/settings" },
+  ];
 
-<div className="sidebar">
+  return (
+    <div className={open ? "sidebar open" : "sidebar"}>
 
+      <div className="top-section">
 
-<h2>
-ERP CRM
-</h2>
+        <button
+          className="menu-btn"
+          onClick={() => setOpen(!open)}
+        >
+          <FaBars />
+        </button>
 
+        {open && <h2>ERP CRM</h2>}
 
+      </div>
 
-<li>
+      <ul>
 
-<Link to="/dashboard">
+        {menus.map((menu) => (
 
-<FaHome />
+          <li key={menu.name}>
 
-<span>
-Dashboard
-</span>
+            <Link
+              to={menu.path}
+              className={
+                location.pathname === menu.path ? "active" : ""
+              }
+            >
 
-</Link>
+              <div className="icon">
+                {menu.icon}
+              </div>
 
-</li>
+              {open && (
+                <span>{menu.name}</span>
+              )}
 
+            </Link>
 
+          </li>
 
+        ))}
 
+      </ul>
 
-<li>
-
-<Link to="/customers">
-
-<FaUsers />
-
-<span>
-Customers
-</span>
-
-</Link>
-
-</li>
-
-
-
-
-
-<li>
-
-<Link to="/products">
-
-<FaBox />
-
-<span>
-Products
-</span>
-
-</Link>
-
-</li>
-
-
-
-
-
-<li>
-
-<Link to="/inventory">
-
-<FaWarehouse />
-
-<span>
-Inventory
-</span>
-
-</Link>
-
-</li>
-
-
-
-
-
-<li>
-
-<Link to="/challans">
-
-<FaFileInvoice />
-
-<span>
-Challans
-</span>
-
-</Link>
-
-</li>
-
-
-
-
-
-<li>
-
-<Link to="/reports">
-
-<FaChartBar />
-
-<span>
-Reports
-</span>
-
-</Link>
-
-</li>
-
-
-
-
-
-<li>
-
-<Link to="/settings">
-
-<FaCog />
-
-<span>
-Settings
-</span>
-
-</Link>
-
-</li>
-
-
-
-
-</div>
-
-);
-
+    </div>
+  );
 }
