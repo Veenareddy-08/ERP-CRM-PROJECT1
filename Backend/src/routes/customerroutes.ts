@@ -3,7 +3,6 @@ import {
   getAllCustomers,
   createCustomer
 } from "../controllers/customercontroler";
-import { Routes } from "react-router-dom";
 
 const router = express.Router();
 
